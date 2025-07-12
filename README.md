@@ -1,12 +1,6 @@
-好的，没问题！根据您提供的软件截图，我已经为您草拟了一份简洁、专业且包含中英双语的 GitHub README。
-
-您可以直接复制下面的 Markdown 内容到您的 `README.md` 文件中。
-
----
-
 # ⏰ 定时关机软件 (Scheduled Shutdown Tool)
 
-[中文](#-定时关机软件) | [English](#-scheduled-shutdown-tool)
+[中文](#中文) | [English](#english)
 
 ---
 
