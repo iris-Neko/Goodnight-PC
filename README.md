@@ -39,6 +39,7 @@
 <br>
 
 ---
+<img width="784" height="1067" alt="image" src="https://github.com/user-attachments/assets/c8c930ee-56a9-4f01-8f3c-1f8480f6b2e7" />
 
 ## 🇬🇧 English
 
