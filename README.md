@@ -9,8 +9,7 @@
 这是一款简洁、轻量级的 Windows 定时关机工具，帮助您在指定时间后自动执行关机、重启或休眠等操作。
 
 
-*(请将此处的图片链接替换为您自己的截图链接)*
-
+<img style="max-width: 500px;" alt="image" src="https://github.com/user-attachments/assets/c8c930ee-56a9-4f01-8f3c-1f8480f6b2e7" />
 ### ✨ 主要功能
 
 *   **灵活的倒计时设置**：自由设定小时、分钟、秒，精确控制任务执行时间。
@@ -39,7 +38,7 @@
 <br>
 
 ---
-<img width="784" height="1067" alt="image" src="https://github.com/user-attachments/assets/c8c930ee-56a9-4f01-8f3c-1f8480f6b2e7" />
+
 
 ## 🇬🇧 English
 
