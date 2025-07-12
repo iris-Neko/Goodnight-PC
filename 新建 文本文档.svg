@@ -1,0 +1,39 @@
+<svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+    矢量闹钟图标 (最终版)
+    作者: AI
+    颜色: 红色 (#E57373), 蓝灰色 (#90A4AE)
+    修改: 秒针指向6点钟方向
+  -->
+  <g transform="translate(0, 2)">
+    <!-- 闹钟的脚 -->
+    <line x1="28" y1="82" x2="20" y2="92" stroke="#90A4AE" stroke-width="5" stroke-linecap="round"/>
+    <line x1="72" y1="82" x2="80" y2="92" stroke="#90A4AE" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- 闹钟的铃铛 -->
+    <circle cx="28" cy="22" r="10" fill="#90A4AE"/>
+    <circle cx="72" cy="22" r="10" fill="#90A4AE"/>
+
+    <!-- 顶部的按钮/撞锤 -->
+    <line x1="50" y1="23" x2="50" y2="18" stroke="#90A4AE" stroke-width="2.5" stroke-linecap="round"/>
+    <rect x="44" y="15" width="12" height="5" rx="2.5" fill="#90A4AE"/>
+
+    <!-- 闹钟主体 -->
+    <circle cx="50" cy="55" r="32" fill="none" stroke="#E57373" stroke-width="8"/>
+    <circle cx="50" cy="55" r="28" fill="#FFFFFF"/>
+
+    <!-- 钟表指针 (时间 1:50) -->
+    <g transform="translate(50, 55)">
+      <!-- 时针 -->
+      <line x1="0" y1="0" x2="0" y2="-15" stroke="#90A4AE" stroke-width="5.2" stroke-linecap="round" transform="rotate(55)"/>
+      <!-- 分针 -->
+      <line x1="0" y1="0" x2="0" y2="-23" stroke="#90A4AE" stroke-width="5.2" stroke-linecap="round" transform="rotate(-60)"/>
+      
+      <!-- 秒针 (修改后：指向6点钟方向) -->
+      <line x1="0" y1="0" x2="0" y2="20" stroke="#E57373" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- 中心点 -->
+    <circle cx="50" cy="55" r="3" fill="#90A4AE"/>
+  </g>
+</svg>
