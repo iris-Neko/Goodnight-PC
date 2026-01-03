@@ -1,0 +1,67 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- 主按钮样式 -->
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="#2196F3"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    
+    <Style Selector="Button.primary:pointerover">
+        <Setter Property="Background" Value="#1976D2"/>
+    </Style>
+    
+    <Style Selector="Button.primary:pressed">
+        <Setter Property="Background" Value="#1565C0"/>
+    </Style>
+    
+    <!-- 次要按钮样式 -->
+    <Style Selector="Button.secondary">
+        <Setter Property="Background" Value="#F44336"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Height" Value="38"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    
+    <Style Selector="Button.secondary:pointerover">
+        <Setter Property="Background" Value="#D32F2F"/>
+    </Style>
+    
+    <Style Selector="Button.secondary:pressed">
+        <Setter Property="Background" Value="#C62828"/>
+    </Style>
+    
+    <Style Selector="Button:disabled">
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
+    
+    <!-- HeaderedContentControl 样式 -->
+    <Style Selector="HeaderedContentControl">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="0,10,0,10"/>
+    </Style>
+    
+    <!-- TextBox 样式 -->
+    <Style Selector="TextBox.time-input">
+        <Setter Property="Width" Value="70"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    
+    <!-- RadioButton 样式 -->
+    <Style Selector="RadioButton">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+    
+</Styles>

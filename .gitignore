@@ -1,2 +1,78 @@
+# .gitignore for .NET / Avalonia Project
+
+## Build results
 bin/
 obj/
+[Gg]oodNightPC-Setup.exe
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+## Visual Studio cache/options
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Rider
+.idea/
+*.sln.iml
+
+## User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+## Build Results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+## Roslyn cache directories
+*.ide/
+
+## NuGet Packages
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+## Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+
+## Python (legacy)
+*.py
+*.spec
+__pycache__/
+*.pyc
+
+## OS files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+## Avalonia specific
+!**/AvaloniaResourceXamlInfo
+
+## Log files
+*.log
+
+## Temporary files
+*.tmp
+*.temp

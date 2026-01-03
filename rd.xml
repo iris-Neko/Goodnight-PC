@@ -1,0 +1,17 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Application>
+    <Assembly Name="GoodNightPC" Dynamic="Required All">
+      <Type Name="GoodNightPC.App" Dynamic="Required All" />
+      <Type Name="GoodNightPC.Program" Dynamic="Required All" />
+      <Type Name="GoodNightPC.Views.MainWindow" Dynamic="Required All" />
+      <Type Name="GoodNightPC.ViewModels.MainWindowViewModel" Dynamic="Required All" />
+      <Type Name="GoodNightPC.Models.ShutdownAction" Dynamic="Required All" />
+      <Type Name="GoodNightPC.Models.LogEntry" Dynamic="Required All" />
+    </Assembly>
+    
+    <Assembly Name="Avalonia.Controls" Dynamic="Required All" />
+    <Assembly Name="Avalonia.Markup.Xaml" Dynamic="Required All" />
+    <Assembly Name="Avalonia.Themes.Fluent" Dynamic="Required All" />
+  </Application>
+</Directives>
+
