@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -16,15 +17,35 @@ namespace GoodNightPC.ViewModels;
 
 public class MainWindowViewModel : ReactiveObject
 {
+    private readonly LocalizationService _loc = LocalizationService.Instance;
     private int _hours;
     private int _minutes;
     private int _seconds = 5;
     private ShutdownAction _selectedAction = ShutdownAction.Hibernate;
     private bool _isRunning;
     private int _countdownSeconds;
-    private string _statusText = "状态：等待设置";
-    private string _countdownText = "倒计时：--:--:--";
+    private string _statusText = string.Empty;
+    private string _countdownText = string.Empty;
     private CancellationTokenSource? _cancellationTokenSource;
+    private string _windowTitle = string.Empty;
+    private string _appTitle = string.Empty;
+    private string _headerSetTime = string.Empty;
+    private string _headerShutdownOptions = string.Empty;
+    private string _headerLogs = string.Empty;
+    private string _labelHours = string.Empty;
+    private string _labelMinutes = string.Empty;
+    private string _labelSeconds = string.Empty;
+    private string _optionHibernate = string.Empty;
+    private string _optionForceHibernate = string.Empty;
+    private string _optionShutdown = string.Empty;
+    private string _optionRestart = string.Empty;
+    private string _optionForceShutdown = string.Empty;
+    private string _startButtonText = string.Empty;
+    private string _stopButtonText = string.Empty;
+    private string _countdownLabel = string.Empty;
+    private string _languageLabel = string.Empty;
+    private ObservableCollection<LanguageOption> _languages = new();
+    private LanguageOption? _selectedLanguage;
 
     public MainWindowViewModel()
     {
@@ -36,7 +57,9 @@ public class MainWindowViewModel : ReactiveObject
         StopCommand = ReactiveCommand.Create(StopCountdown, 
             this.WhenAnyValue(x => x.IsRunning));
         
-        AddLog("程序启动成功");
+        _loc.LanguageChanged += UpdateLocalizedTexts;
+        UpdateLocalizedTexts();
+        AddLog(_loc.GetString("Log_Startup"));
     }
 
     public int Hours
@@ -123,31 +146,151 @@ public class MainWindowViewModel : ReactiveObject
 
     public ReactiveCommand<Unit, Unit> StartCommand { get; }
     public ReactiveCommand<Unit, Unit> StopCommand { get; }
+    
+    public string WindowTitle
+    {
+        get => _windowTitle;
+        private set => this.RaiseAndSetIfChanged(ref _windowTitle, value);
+    }
+
+    public string AppTitle
+    {
+        get => _appTitle;
+        private set => this.RaiseAndSetIfChanged(ref _appTitle, value);
+    }
+
+    public string HeaderSetTime
+    {
+        get => _headerSetTime;
+        private set => this.RaiseAndSetIfChanged(ref _headerSetTime, value);
+    }
+
+    public string HeaderShutdownOptions
+    {
+        get => _headerShutdownOptions;
+        private set => this.RaiseAndSetIfChanged(ref _headerShutdownOptions, value);
+    }
+
+    public string HeaderLogs
+    {
+        get => _headerLogs;
+        private set => this.RaiseAndSetIfChanged(ref _headerLogs, value);
+    }
+
+    public string LabelHours
+    {
+        get => _labelHours;
+        private set => this.RaiseAndSetIfChanged(ref _labelHours, value);
+    }
+
+    public string LabelMinutes
+    {
+        get => _labelMinutes;
+        private set => this.RaiseAndSetIfChanged(ref _labelMinutes, value);
+    }
+
+    public string LabelSeconds
+    {
+        get => _labelSeconds;
+        private set => this.RaiseAndSetIfChanged(ref _labelSeconds, value);
+    }
+
+    public string OptionHibernate
+    {
+        get => _optionHibernate;
+        private set => this.RaiseAndSetIfChanged(ref _optionHibernate, value);
+    }
+
+    public string OptionForceHibernate
+    {
+        get => _optionForceHibernate;
+        private set => this.RaiseAndSetIfChanged(ref _optionForceHibernate, value);
+    }
+
+    public string OptionShutdown
+    {
+        get => _optionShutdown;
+        private set => this.RaiseAndSetIfChanged(ref _optionShutdown, value);
+    }
+
+    public string OptionRestart
+    {
+        get => _optionRestart;
+        private set => this.RaiseAndSetIfChanged(ref _optionRestart, value);
+    }
+
+    public string OptionForceShutdown
+    {
+        get => _optionForceShutdown;
+        private set => this.RaiseAndSetIfChanged(ref _optionForceShutdown, value);
+    }
+
+    public string StartButtonText
+    {
+        get => _startButtonText;
+        private set => this.RaiseAndSetIfChanged(ref _startButtonText, value);
+    }
+
+    public string StopButtonText
+    {
+        get => _stopButtonText;
+        private set => this.RaiseAndSetIfChanged(ref _stopButtonText, value);
+    }
+
+    public string CountdownLabel
+    {
+        get => _countdownLabel;
+        private set => this.RaiseAndSetIfChanged(ref _countdownLabel, value);
+    }
+
+    public string LanguageLabel
+    {
+        get => _languageLabel;
+        private set => this.RaiseAndSetIfChanged(ref _languageLabel, value);
+    }
+
+    public ObservableCollection<LanguageOption> Languages
+    {
+        get => _languages;
+        private set => this.RaiseAndSetIfChanged(ref _languages, value);
+    }
+
+    public LanguageOption? SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set
+        {
+            if (value == null) return;
+            this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
+            _loc.Language = value.Language;
+            UpdateLocalizedTexts();
+        }
+    }
 
     private async Task StartCountdownAsync()
     {
         // 验证输入
         if (Hours < 0 || Hours > 23)
         {
-            await ShowMessageBox("小时数必须在 0-23 之间！", "输入错误");
+            await ShowMessageBox(_loc.GetString("Msg_InvalidHour"), _loc.GetString("Msg_Title_InputError"));
             return;
         }
 
         if (Minutes < 0 || Minutes > 59)
         {
-            await ShowMessageBox("分钟数必须在 0-59 之间！", "输入错误");
+            await ShowMessageBox(_loc.GetString("Msg_InvalidMinute"), _loc.GetString("Msg_Title_InputError"));
             return;
         }
 
         if (Seconds < 0 || Seconds > 59)
         {
-            await ShowMessageBox("秒数必须在 0-59 之间！", "输入错误");
+            await ShowMessageBox(_loc.GetString("Msg_InvalidSecond"), _loc.GetString("Msg_Title_InputError"));
             return;
         }
 
         if (Hours == 0 && Minutes == 0 && Seconds == 0)
         {
-            await ShowMessageBox("请设置有效的时间！", "警告");
+            await ShowMessageBox(_loc.GetString("Msg_TimeRequired"), _loc.GetString("Msg_Title_Warning"));
             return;
         }
 
@@ -157,10 +300,10 @@ public class MainWindowViewModel : ReactiveObject
         UpdateCountdownDisplay();
         
         var action = SelectedAction.GetDisplayName();
-        AddLog($"定时任务已开始：{Hours}小时{Minutes}分{Seconds}秒后执行【{action}】");
+        AddLog(string.Format(_loc.GetString("Log_StartTask"), Hours, Minutes, Seconds, action));
         
         var timeStr = FormatTimeString(_countdownSeconds);
-        StatusText = $"状态：定时器运行中 - 还有{timeStr}后执行{action}";
+        StatusText = string.Format(_loc.GetString("Status_Running_Format"), timeStr, action);
 
         // 启动倒计时任务
         _cancellationTokenSource = new CancellationTokenSource();
@@ -172,10 +315,10 @@ public class MainWindowViewModel : ReactiveObject
         _cancellationTokenSource?.Cancel();
         IsRunning = false;
         
-        StatusText = "状态：定时器已取消";
-        CountdownText = "倒计时：--:--:--";
+        StatusText = _loc.GetString("Status_Canceled");
+        CountdownText = $"{_loc.GetString("Countdown_Label")}: --:--:--";
         
-        AddLog("定时任务已取消");
+        AddLog(_loc.GetString("Log_Cancel"));
     }
 
     private async Task RunCountdownAsync(CancellationToken cancellationToken)
@@ -194,7 +337,7 @@ public class MainWindowViewModel : ReactiveObject
                 
                 var action = SelectedAction.GetDisplayName();
                 var timeStr = FormatTimeString(_countdownSeconds);
-                StatusText = $"状态：定时器运行中 - 还有{timeStr}后执行{action}";
+                StatusText = string.Format(_loc.GetString("Status_Running_Format"), timeStr, action);
             }
 
             if (!cancellationToken.IsCancellationRequested && _countdownSeconds == 0)
@@ -217,7 +360,7 @@ public class MainWindowViewModel : ReactiveObject
         int hours = _countdownSeconds / 3600;
         int minutes = (_countdownSeconds % 3600) / 60;
         int seconds = _countdownSeconds % 60;
-        CountdownText = $"倒计时：{hours:D2}:{minutes:D2}:{seconds:D2}";
+        CountdownText = $"{_loc.GetString("Countdown_Prefix")}{hours:D2}:{minutes:D2}:{seconds:D2}";
     }
 
     private string FormatTimeString(int totalSeconds)
@@ -227,11 +370,11 @@ public class MainWindowViewModel : ReactiveObject
         int seconds = totalSeconds % 60;
 
         if (hours > 0)
-            return $"{hours}小时{minutes}分{seconds}秒";
+            return $"{hours}{_loc.GetString("Label_Hours")}{minutes}{_loc.GetString("Label_Minutes")}{seconds}{_loc.GetString("Label_Seconds")}";
         else if (minutes > 0)
-            return $"{minutes}分{seconds}秒";
+            return $"{minutes}{_loc.GetString("Label_Minutes")}{seconds}{_loc.GetString("Label_Seconds")}";
         else
-            return $"{seconds}秒";
+            return $"{seconds}{_loc.GetString("Label_Seconds")}";
     }
 
     private async Task ExecuteShutdownAsync()
@@ -243,7 +386,7 @@ public class MainWindowViewModel : ReactiveObject
 
         try
         {
-            AddLog($"倒计时结束，正在执行：{action}");
+            AddLog(string.Format(_loc.GetString("Log_CountdownDone"), action));
 
             var processInfo = new ProcessStartInfo
             {
@@ -254,12 +397,12 @@ public class MainWindowViewModel : ReactiveObject
             };
 
             Process.Start(processInfo);
-            AddLog($"命令已执行：{command}");
+            AddLog(string.Format(_loc.GetString("Log_CommandExecuted"), command));
         }
         catch (Exception ex)
         {
-            AddLog($"执行失败：{ex.Message}");
-            await ShowMessageBox($"执行失败：{ex.Message}", "错误");
+            AddLog(string.Format(_loc.GetString("Log_ExecuteFailed"), ex.Message));
+            await ShowMessageBox(string.Format(_loc.GetString("Log_ExecuteFailed"), ex.Message), _loc.GetString("Msg_Title_Error"));
             ResetUI();
         }
     }
@@ -286,7 +429,7 @@ public class MainWindowViewModel : ReactiveObject
 
         try
         {
-            AddLog($"快速执行：{actionName}");
+            AddLog(string.Format(_loc.GetString("Log_QuickAction"), actionName));
 
             var processInfo = new ProcessStartInfo
             {
@@ -297,18 +440,18 @@ public class MainWindowViewModel : ReactiveObject
             };
 
             Process.Start(processInfo);
-            AddLog($"命令已执行：{command}");
+            AddLog(string.Format(_loc.GetString("Log_CommandExecuted"), command));
         }
         catch (Exception ex)
         {
-            AddLog($"执行失败：{ex.Message}");
+            AddLog(string.Format(_loc.GetString("Log_ExecuteFailed"), ex.Message));
         }
     }
 
     private void ResetUI()
     {
-        StatusText = "状态：等待设置";
-        CountdownText = "倒计时：--:--:--";
+        StatusText = _loc.GetString("Status_Waiting");
+        CountdownText = $"{_loc.GetString("Countdown_Label")}: --:--:--";
     }
 
     private void AddLog(string message)
@@ -338,8 +481,8 @@ public class MainWindowViewModel : ReactiveObject
         if (IsRunning)
         {
             var box = MessageBoxManager.GetMessageBoxStandard(
-                "确认", 
-                "定时器正在运行，确定要退出吗？", 
+                _loc.GetString("Msg_Title_Confirm"), 
+                _loc.GetString("Msg_Confirm_ExitWhileRunning"), 
                 ButtonEnum.YesNo);
             
             var result = await box.ShowAsync();
@@ -347,6 +490,39 @@ public class MainWindowViewModel : ReactiveObject
         }
         
         return true;
+    }
+
+    private void UpdateLocalizedTexts()
+    {
+        WindowTitle = _loc.GetString("AppName");
+        AppTitle = _loc.GetString("Header_Title");
+        HeaderSetTime = _loc.GetString("Header_SetTime");
+        HeaderShutdownOptions = _loc.GetString("Header_ShutdownOptions");
+        HeaderLogs = _loc.GetString("Header_Logs");
+        LabelHours = _loc.GetString("Label_Hours");
+        LabelMinutes = _loc.GetString("Label_Minutes");
+        LabelSeconds = _loc.GetString("Label_Seconds");
+        OptionHibernate = _loc.GetString("Opt_Hibernate");
+        OptionForceHibernate = _loc.GetString("Opt_ForceHibernate");
+        OptionShutdown = _loc.GetString("Opt_Shutdown");
+        OptionRestart = _loc.GetString("Opt_Restart");
+        OptionForceShutdown = _loc.GetString("Opt_ForceShutdown");
+        StartButtonText = _loc.GetString("Btn_Start");
+        StopButtonText = _loc.GetString("Btn_Stop");
+        CountdownLabel = _loc.GetString("Countdown_Label");
+        LanguageLabel = _loc.GetString("Lang_Label");
+
+        if (!IsRunning)
+        {
+            StatusText = _loc.GetString("Status_Waiting");
+            CountdownText = $"{_loc.GetString("Countdown_Label")}: --:--:--";
+        }
+
+        Languages = new ObservableCollection<LanguageOption>(_loc.GetLanguagesForDisplay());
+        SelectedLanguage = Languages.FirstOrDefault(l => l.Language == _loc.Language) 
+                           ?? Languages.FirstOrDefault();
+
+        this.RaisePropertyChanged(nameof(Languages));
     }
 }
 

@@ -1,9 +1,9 @@
 [Setup]
-AppName=定时关机软件
+AppName=GoodNight PC
 AppVersion=2.0.0
-AppPublisher=GoodNightPC
-DefaultDirName={pf}\GoodNightPC
-DefaultGroupName=定时关机软件
+AppPublisher=GoodNight PC
+DefaultDirName={commonpf}\GoodNightPC
+DefaultGroupName=GoodNight PC
 OutputDir=.
 OutputBaseFilename=GoodNightPC-Setup
 SetupIconFile=icon.ico
@@ -14,8 +14,8 @@ SolidCompression=yes
 Source: "bin\Release\net10.0\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: "{group}\定时关机软件"; Filename: "{app}\GoodNightPC.exe"
-Name: "{commondesktop}\定时关机软件"; Filename: "{app}\GoodNightPC.exe"; Tasks: desktopicon
+Name: "{group}\GoodNight PC"; Filename: "{app}\GoodNightPC.exe"
+Name: "{commondesktop}\GoodNight PC"; Filename: "{app}\GoodNightPC.exe"; Tasks: desktopicon
 
 [Tasks]
 Name: "desktopicon"; Description: "在桌面创建快捷方式"

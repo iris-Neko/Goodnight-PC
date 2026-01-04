@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using GoodNightPC.Models;
 using GoodNightPC.ViewModels;
 using GoodNightPC.Views;
 
@@ -14,6 +15,12 @@ public partial class App : Application
 {
     private TrayIcon? _trayIcon;
     private EventWaitHandle? _showSignal;
+    private NativeMenuItem? _showMenuItem;
+    private NativeMenuItem? _hibernateMenuItem;
+    private NativeMenuItem? _shutdownMenuItem;
+    private NativeMenuItem? _restartMenuItem;
+    private NativeMenuItem? _exitMenuItem;
+    private readonly LocalizationService _loc = LocalizationService.Instance;
 
     public override void Initialize()
     {
@@ -36,6 +43,9 @@ public partial class App : Application
 
             // 单实例唤醒信号监听
             SetupShowSignal(desktop, mainWindow);
+
+            _loc.LanguageChanged += UpdateTrayTexts;
+            UpdateTrayTexts();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -59,80 +69,80 @@ public partial class App : Application
             // 如果加载失败，继续使用默认图标
         }
         
-        _trayIcon.ToolTipText = "定时关机软件";
+        _trayIcon.ToolTipText = _loc.GetString("Tray_Tooltip");
 
         var trayMenu = new NativeMenu();
         
         // 显示主窗口
-        var showMenuItem = new NativeMenuItem
+        _showMenuItem = new NativeMenuItem
         {
-            Header = "显示窗口"
+            Header = _loc.GetString("Tray_Show")
         };
-        showMenuItem.Click += (s, e) =>
+        _showMenuItem.Click += (s, e) =>
         {
             mainWindow.Show();
             mainWindow.WindowState = WindowState.Normal;
             mainWindow.Activate();
         };
-        trayMenu.Add(showMenuItem);
+        trayMenu.Add(_showMenuItem);
         
         trayMenu.Add(new NativeMenuItemSeparator());
         
         // 快速休眠
-        var hibernateMenuItem = new NativeMenuItem
+        _hibernateMenuItem = new NativeMenuItem
         {
-            Header = "💤 立即休眠"
+            Header = _loc.GetString("Tray_QuickHibernate")
         };
-        hibernateMenuItem.Click += (s, e) =>
+        _hibernateMenuItem.Click += (s, e) =>
         {
             if (mainWindow.DataContext is MainWindowViewModel vm)
             {
                 vm.QuickHibernate();
             }
         };
-        trayMenu.Add(hibernateMenuItem);
+        trayMenu.Add(_hibernateMenuItem);
         
         // 快速关机
-        var shutdownMenuItem = new NativeMenuItem
+        _shutdownMenuItem = new NativeMenuItem
         {
-            Header = "🔌 立即关机"
+            Header = _loc.GetString("Tray_QuickShutdown")
         };
-        shutdownMenuItem.Click += (s, e) =>
+        _shutdownMenuItem.Click += (s, e) =>
         {
             if (mainWindow.DataContext is MainWindowViewModel vm)
             {
                 vm.QuickShutdown();
             }
         };
-        trayMenu.Add(shutdownMenuItem);
+        trayMenu.Add(_shutdownMenuItem);
         
         // 快速重启
-        var restartMenuItem = new NativeMenuItem
+        _restartMenuItem = new NativeMenuItem
         {
-            Header = "🔄 立即重启"
+            Header = _loc.GetString("Tray_QuickRestart")
         };
-        restartMenuItem.Click += (s, e) =>
+        _restartMenuItem.Click += (s, e) =>
         {
             if (mainWindow.DataContext is MainWindowViewModel vm)
             {
                 vm.QuickRestart();
             }
         };
-        trayMenu.Add(restartMenuItem);
+        trayMenu.Add(_restartMenuItem);
         
         trayMenu.Add(new NativeMenuItemSeparator());
         
         // 退出
-        var exitMenuItem = new NativeMenuItem
+        _exitMenuItem = new NativeMenuItem
         {
-            Header = "退出"
+            Header = _loc.GetString("Tray_Exit")
         };
-        exitMenuItem.Click += (s, e) =>
+        _exitMenuItem.Click += (s, e) =>
         {
             _trayIcon?.Dispose();
             desktop.Shutdown();
         };
-        trayMenu.Add(exitMenuItem);
+        trayMenu.Add(_exitMenuItem);
         
         _trayIcon.Menu = trayMenu;
         
@@ -175,6 +185,20 @@ public partial class App : Application
         {
             // 信号创建失败不影响主流程
         }
+    }
+
+    private void UpdateTrayTexts()
+    {
+        if (_trayIcon != null)
+        {
+            _trayIcon.ToolTipText = _loc.GetString("Tray_Tooltip");
+        }
+
+        if (_showMenuItem != null) _showMenuItem.Header = _loc.GetString("Tray_Show");
+        if (_hibernateMenuItem != null) _hibernateMenuItem.Header = _loc.GetString("Tray_QuickHibernate");
+        if (_shutdownMenuItem != null) _shutdownMenuItem.Header = _loc.GetString("Tray_QuickShutdown");
+        if (_restartMenuItem != null) _restartMenuItem.Header = _loc.GetString("Tray_QuickRestart");
+        if (_exitMenuItem != null) _exitMenuItem.Header = _loc.GetString("Tray_Exit");
     }
 }
 

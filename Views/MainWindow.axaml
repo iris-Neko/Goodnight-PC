@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="540" d:DesignHeight="720"
         x:Class="GoodNightPC.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="定时关机软件"
+        Title="{Binding WindowTitle}"
         Width="540"
         Height="720"
         CanResize="False"
@@ -27,14 +27,28 @@
                     CornerRadius="8" 
                     Margin="0,10,0,10"
                     Padding="15">
-                <TextBlock Text="定时关机软件" 
-                          FontSize="20" 
-                          FontWeight="Bold"
-                          HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12">
+                    <Image Source="avares://GoodNightPC/Assets/icon.png"
+                           Width="32"
+                           Height="32"/>
+                    <TextBlock Text="{Binding AppTitle}" 
+                              FontSize="20" 
+                              FontWeight="Bold"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
             </Border>
 
+            <!-- 语言选择 -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Right" Spacing="8">
+                <TextBlock Text="{Binding LanguageLabel}" VerticalAlignment="Center"/>
+                <ComboBox Width="200"
+                          ItemsSource="{Binding Languages}"
+                          SelectedItem="{Binding SelectedLanguage}"
+                          DisplayMemberBinding="{Binding DisplayName}"/>
+            </StackPanel>
+
             <!-- 时间设置组 -->
-            <HeaderedContentControl Header="⏱️ 设置关机时间" Margin="0,10,0,10">
+            <HeaderedContentControl Header="{Binding HeaderSetTime}" Margin="0,10,0,10">
                 <Border BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Padding="10">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         
@@ -51,7 +65,7 @@
                                           Padding="5"
                                           AllowSpin="True"
                                           ButtonSpinnerLocation="Right"/>
-                            <TextBlock Text="小时" 
+                            <TextBlock Text="{Binding LabelHours}" 
                                       VerticalAlignment="Center" 
                                       Margin="10,0,0,0"
                                       FontSize="14"/>
@@ -70,7 +84,7 @@
                                           Padding="5"
                                           AllowSpin="True"
                                           ButtonSpinnerLocation="Right"/>
-                            <TextBlock Text="分钟" 
+                            <TextBlock Text="{Binding LabelMinutes}" 
                                       VerticalAlignment="Center" 
                                       Margin="10,0,0,0"
                                       FontSize="14"/>
@@ -89,7 +103,7 @@
                                           Padding="5"
                                           AllowSpin="True"
                                           ButtonSpinnerLocation="Right"/>
-                            <TextBlock Text="秒" 
+                            <TextBlock Text="{Binding LabelSeconds}" 
                                       VerticalAlignment="Center" 
                                       Margin="10,0,0,0"
                                       FontSize="14"/>
@@ -100,22 +114,22 @@
             </HeaderedContentControl>
 
             <!-- 关机选项 -->
-            <HeaderedContentControl Header="🔌 关机选项" Margin="0,10,0,10">
+            <HeaderedContentControl Header="{Binding HeaderShutdownOptions}" Margin="0,10,0,10">
                 <Border BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Padding="10">
                     <StackPanel>
-                        <RadioButton Content="😴 休眠" 
+                        <RadioButton Content="{Binding OptionHibernate}" 
                                     IsChecked="{Binding IsHibernate}"
                                     GroupName="ShutdownOptions"/>
-                        <RadioButton Content="💤 强制休眠（不保存数据）" 
+                        <RadioButton Content="{Binding OptionForceHibernate}" 
                                     IsChecked="{Binding IsForceHibernate}"
                                     GroupName="ShutdownOptions"/>
-                        <RadioButton Content="🔌 关机" 
+                        <RadioButton Content="{Binding OptionShutdown}" 
                                     IsChecked="{Binding IsShutdown}"
                                     GroupName="ShutdownOptions"/>
-                        <RadioButton Content="🔄 重启" 
+                        <RadioButton Content="{Binding OptionRestart}" 
                                     IsChecked="{Binding IsRestart}"
                                     GroupName="ShutdownOptions"/>
-                        <RadioButton Content="⚠️ 强制关机（不保存数据）" 
+                        <RadioButton Content="{Binding OptionForceShutdown}" 
                                     IsChecked="{Binding IsForceShutdown}"
                                     GroupName="ShutdownOptions"/>
                     </StackPanel>
@@ -125,14 +139,14 @@
             <!-- 控制按钮 -->
             <Grid Margin="0,10,0,10" ColumnDefinitions="*,10,*">
                 <Button Grid.Column="0"
-                        Content="开始定时" 
+                        Content="{Binding StartButtonText}" 
                         Classes="primary"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         Command="{Binding StartCommand}"/>
                 
                 <Button Grid.Column="2"
-                        Content="取消定时" 
+                        Content="{Binding StopButtonText}" 
                         Classes="secondary"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
@@ -162,7 +176,7 @@
             </Border>
 
             <!-- 日志区域 -->
-            <HeaderedContentControl Header="📋 操作日志" Margin="0,10,0,10">
+            <HeaderedContentControl Header="{Binding HeaderLogs}" Margin="0,10,0,10">
                 <Border BorderBrush="#ddd" BorderThickness="1" CornerRadius="5" Padding="5">
                     <ScrollViewer Height="150" VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding Logs}">

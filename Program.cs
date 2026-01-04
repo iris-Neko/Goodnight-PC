@@ -50,7 +50,7 @@ class Program
         try
         {
             // 窗口标题与 XAML 中的 Title 保持一致
-            var hWnd = FindWindowW(null, "定时关机软件");
+            var hWnd = FindWindowW(null, "GoodNight PC");
             if (hWnd != IntPtr.Zero)
             {
                 ShowWindow(hWnd, SW_RESTORE);

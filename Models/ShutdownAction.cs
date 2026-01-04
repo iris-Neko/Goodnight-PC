@@ -13,14 +13,15 @@ public static class ShutdownActionExtensions
 {
     public static string GetDisplayName(this ShutdownAction action)
     {
+        var loc = LocalizationService.Instance;
         return action switch
         {
-            ShutdownAction.Hibernate => "休眠",
-            ShutdownAction.ForceHibernate => "强制休眠",
-            ShutdownAction.Shutdown => "关机",
-            ShutdownAction.Restart => "重启",
-            ShutdownAction.ForceShutdown => "强制关机",
-            _ => "未知"
+            ShutdownAction.Hibernate => loc.GetString("Opt_Hibernate"),
+            ShutdownAction.ForceHibernate => loc.GetString("Opt_ForceHibernate"),
+            ShutdownAction.Shutdown => loc.GetString("Opt_Shutdown"),
+            ShutdownAction.Restart => loc.GetString("Opt_Restart"),
+            ShutdownAction.ForceShutdown => loc.GetString("Opt_ForceShutdown"),
+            _ => "Unknown"
         };
     }
     
