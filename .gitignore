@@ -76,3 +76,11 @@ Thumbs.db
 ## Temporary files
 *.tmp
 *.temp
+
+## Test scripts and backups
+test_lang.ps1
+test_cultures.ps1
+test_all_cultures.ps1
+restore_code.ps1
+test.ps1
+*.bak

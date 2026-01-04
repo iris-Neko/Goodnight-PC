@@ -57,6 +57,9 @@ public class MainWindowViewModel : ReactiveObject
         StopCommand = ReactiveCommand.Create(StopCountdown, 
             this.WhenAnyValue(x => x.IsRunning));
         
+        // 初始化语言选项（固定不变）
+        InitializeLanguages();
+        
         _loc.LanguageChanged += UpdateLocalizedTexts;
         UpdateLocalizedTexts();
         AddLog(_loc.GetString("Log_Startup"));
@@ -491,6 +494,20 @@ public class MainWindowViewModel : ReactiveObject
         return true;
     }
 
+    private void InitializeLanguages()
+    {
+        // 语言选项固定，使用固定的显示名称（中英双语）
+        Languages = new ObservableCollection<LanguageOption>
+        {
+            new LanguageOption(AppLanguage.Auto, "🌐 Follow System / 跟随系统"),
+            new LanguageOption(AppLanguage.Zh, "简体中文"),
+            new LanguageOption(AppLanguage.En, "English")
+        };
+        
+        SelectedLanguage = Languages.FirstOrDefault(l => l.Language == _loc.Language) 
+                           ?? Languages.FirstOrDefault();
+    }
+
     private void UpdateLocalizedTexts()
     {
         WindowTitle = _loc.GetString("AppName");
@@ -509,7 +526,7 @@ public class MainWindowViewModel : ReactiveObject
         StartButtonText = _loc.GetString("Btn_Start");
         StopButtonText = _loc.GetString("Btn_Stop");
         CountdownLabel = _loc.GetString("Countdown_Label");
-        LanguageLabel = _loc.GetString("Lang_Label");
+        LanguageLabel = "Language";  // 固定显示，不本地化
 
         if (!IsRunning)
         {
@@ -517,11 +534,13 @@ public class MainWindowViewModel : ReactiveObject
             CountdownText = $"{_loc.GetString("Countdown_Label")}: --:--:--";
         }
 
-        Languages = new ObservableCollection<LanguageOption>(_loc.GetLanguagesForDisplay());
-        SelectedLanguage = Languages.FirstOrDefault(l => l.Language == _loc.Language) 
-                           ?? Languages.FirstOrDefault();
-
-        this.RaisePropertyChanged(nameof(Languages));
+        // 更新语言选中状态（不重新创建列表）
+        var targetLang = Languages.FirstOrDefault(l => l.Language == _loc.Language);
+        if (targetLang != null && _selectedLanguage != targetLang)
+        {
+            _selectedLanguage = targetLang;
+            this.RaisePropertyChanged(nameof(SelectedLanguage));
+        }
     }
 }
 
