@@ -1,6 +1,6 @@
 <Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
   <Application>
-    <Assembly Name="GoodNightPC" Dynamic="Required All">
+    <Assembly Name="GoodNight-PC" Dynamic="Required All">
       <Type Name="GoodNightPC.App" Dynamic="Required All" />
       <Type Name="GoodNightPC.Program" Dynamic="Required All" />
       <Type Name="GoodNightPC.Views.MainWindow" Dynamic="Required All" />

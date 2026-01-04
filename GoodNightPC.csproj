@@ -3,7 +3,9 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <AssemblyName>GoodNightPC</AssemblyName>
+    <AssemblyName>GoodNight-PC</AssemblyName>
+    <Product>GoodNight-PC</Product>
+    <AssemblyTitle>GoodNight-PC</AssemblyTitle>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
@@ -35,7 +37,7 @@
     
     <!-- 用于确保 Native AOT 兼容性 -->
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
-    <TrimmerRootAssembly Include="GoodNightPC" />
+    <TrimmerRootAssembly Include="GoodNight-PC" />
   </ItemGroup>
   
   <ItemGroup>

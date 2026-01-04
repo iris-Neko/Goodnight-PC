@@ -10,3 +10,4 @@ public class LogEntry
     public string FormattedLog => $"[{Timestamp:yyyy-MM-dd HH:mm:ss}] {Message}";
 }
 
+

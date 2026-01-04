@@ -28,7 +28,7 @@
                     Margin="0,10,0,10"
                     Padding="15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12">
-                    <Image Source="avares://GoodNightPC/Assets/icon.png"
+                    <Image Source="avares://GoodNight-PC/Assets/icon.png"
                            Width="32"
                            Height="32"/>
                     <TextBlock Text="{Binding AppTitle}" 
