@@ -260,10 +260,9 @@ public class MainWindowViewModel : ReactiveObject
         get => _selectedLanguage;
         set
         {
-            if (value == null) return;
+            if (value == null || _selectedLanguage == value) return;
             this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
             _loc.Language = value.Language;
-            UpdateLocalizedTexts();
         }
     }
 
